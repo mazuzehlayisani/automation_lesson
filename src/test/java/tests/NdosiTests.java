@@ -1,9 +1,8 @@
 package tests;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
-import pages.LearningMaterialsPage;
 import utils.Base;
 
 public class NdosiTests extends Base {
@@ -80,7 +79,7 @@ public class NdosiTests extends Base {
         learningMaterialsPage.DeliveryAddress("123 Test Street");
 
         Assert.assertEquals(
-                learningMaterialsPage.getDeliveryAddress(),
+                learningMaterialsPage.getDeliveryAddress_ByCSS(),
                 "123 Test Street",
                 "Delivery Address is not displayed correctly in the field."
         );
@@ -121,4 +120,9 @@ public class NdosiTests extends Base {
        Thread.sleep(5000);
         learningMaterialsPage.VerifyViewInvoice();
    }
+    @AfterTest
+    public void closeBrowser(){
+        driver.quit();
+    }
+
 }
