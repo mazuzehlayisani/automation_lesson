@@ -24,5 +24,10 @@ public class UserPayload {
         return registerUser;
     }
 
+    public static JSONObject updateUserRole(String role) {
+        JSONObject updateRole = new JSONObject();
+        updateRole.put("role", role);
 
+        return updateRole;
+    }
 }

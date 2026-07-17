@@ -15,14 +15,14 @@ public class UserRequestBuilder {
 
         String apiPath = "/APIDEV/register";
         Response response = given()
-                    .baseUri(BASE_URL)
-                    .basePath(apiPath)
-                    .header("Content-Type", "application/json")
-                    .body(UserPayload.registerUserPayload(firstName, lastName, email, password, groupId))
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .header("Content-Type", "application/json")
+                .body(UserPayload.registerUserPayload(firstName, lastName, email, password, groupId))
                 .when()
-                    .post()
+                .post()
                 .then()
-                    .extract().response();
+                .extract().response();
 
         registeredUserId = response.jsonPath().getString("data.id");
         return response; // Placeholder for the actual implementation
@@ -32,15 +32,30 @@ public class UserRequestBuilder {
 
         String apiPath = "/APIDEV/login";
         Response response = given()
-                    .baseUri(BASE_URL)
-                    .basePath(apiPath)
-                    .header("Content-Type", "application/json")
-                    .body(UserPayload.userLoginPayload(email, password))
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .header("Content-Type", "application/json")
+                .body(UserPayload.userLoginPayload(email, password))
                 .when()
-                    .post()
+                .post()
                 .then()
-                    .extract().response();
+                .extract().response();
         userToken = response.jsonPath().getString("data.token");
         return response; // Placeholder for the actual implementation
+    }
+
+    public static Response updateUserRole(String role) {
+        String apiPath = "/APIDEV/admin/users/"+registeredUserId+"/role";
+        return given()
+                .baseUri(BASE_URL)
+                .basePath(apiPath)
+                .contentType("application/json")
+                .header("Authorization", "Bearer " + userToken)
+                .body(UserPayload.updateUserRole(role))
+                .when()
+                .put()
+                .then()
+                .extract()
+                .response();
     }
 }

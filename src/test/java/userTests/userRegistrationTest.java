@@ -37,8 +37,6 @@ public class userRegistrationTest {
         Assert.assertEquals(response.getStatusCode(), 201);
 
     }
-
-
     @Test (priority = 2)
     public void testAdminLogin() {
         Response response = AdminRequestBuilder.adminLogin(
@@ -50,8 +48,15 @@ public class userRegistrationTest {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
+    @Test(priority = 3)
+    public void updateUserRoleTest() {
+        Response response = UserRequestBuilder.updateUserRole("admin");
 
-    @Test (priority = 3)
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test (priority = 4)
     public void testUserApproval(){
         AdminRequestBuilder.approveUser()
                 .then()
@@ -61,7 +66,7 @@ public class userRegistrationTest {
 
     }
 
-    @Test (priority = 4)
+    @Test (priority = 5)
     public void testUserLoginAfterApproval() {
         UserRequestBuilder.userLogin(userEmail, password)
                 .then()
@@ -71,7 +76,7 @@ public class userRegistrationTest {
 
     }
     //Login with invalid credentials
-    @Test(priority =5)
+    @Test(priority =6)
     public void testAdminLoginWithInvalidCredentials() {
         Response response = AdminRequestBuilder.adminLogin(
                 "adminhlayi@gmail.com",
