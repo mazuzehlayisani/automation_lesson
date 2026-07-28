@@ -6,6 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import requestBuilder.AdminRequestBuilder;
+import requestBuilder.AnnouncementRequestBuilder;
+import requestBuilder.CourseRequestBuilder;
 import requestBuilder.UserRequestBuilder;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -17,6 +19,9 @@ public class userRegistrationTest {
     static String userEmail;
     static String password;
     static String groupId;
+    static String title;
+    static String content;
+    static String isActive;
 
     static Faker faker = new Faker();
 
@@ -75,8 +80,46 @@ public class userRegistrationTest {
                 .body("message", equalTo("Login successful"));
 
     }
+
+    @Test(priority = 6)
+    public void testCreateAnnouncement() {
+        title = faker.book().title();
+        content = faker.lorem().sentence();
+
+        Response response = AnnouncementRequestBuilder.createAnnouncement(title, content);
+
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 201);
+    }
+
+    @Test(priority = 7)
+    public void testUpdateAnnouncement() {
+        title = faker.book().title();
+        content = faker.lorem().paragraph();
+        isActive = String.valueOf(true);
+
+        Response response = AnnouncementRequestBuilder.updateAnnouncement(title, content, isActive);
+
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test(priority = 8)
+    public void testdeleteAnnouncement(){
+        Response response = AnnouncementRequestBuilder.deleteAnnouncement();
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test(priority = 9)
+    public void testGetPublishedCourses(){
+        Response response = CourseRequestBuilder.courseRequest();
+        response.then().log().all();
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
     //Login with invalid credentials
-    @Test(priority =6)
+    @Test(priority =10)
     public void testAdminLoginWithInvalidCredentials() {
         Response response = AdminRequestBuilder.adminLogin(
                 "adminhlayi@gmail.com",
